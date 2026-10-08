@@ -1,0 +1,429 @@
+```html
+<!doctype html>
+<html lang="en">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width,initial-scale=1">
+<title>Cutie Quiz 💗</title>
+
+<style>
+*{box-sizing:border-box}
+body{
+  margin:0;
+  font-family:Arial,sans-serif;
+  background:#fff0f6;
+  color:#4b2638;
+}
+.app{
+  min-height:100vh;
+  display:flex;
+  align-items:center;
+  justify-content:center;
+  padding:24px;
+}
+.card{
+  width:min(620px,100%);
+  background:#fff;
+  border:1px solid #ffd0e1;
+  border-radius:28px;
+  padding:30px;
+  box-shadow:0 18px 60px #d65b871f;
+  text-align:center;
+}
+.heart{font-size:48px}
+.tag{color:#c74370;font-weight:700}
+.progress{
+  height:8px;
+  background:#ffe0eb;
+  border-radius:99px;
+  overflow:hidden;
+  margin:18px 0 26px;
+}
+.bar{
+  height:100%;
+  width:0;
+  background:#ef6d9b;
+  transition:.3s;
+}
+.question{
+  font-size:24px;
+  font-weight:800;
+  margin:18px 0;
+}
+.choices{
+  display:grid;
+  gap:12px;
+}
+.choice,button{
+  border:0;
+  border-radius:16px;
+  padding:15px 18px;
+  font-size:16px;
+  font-weight:700;
+  cursor:pointer;
+}
+.choice{
+  background:#fff5f8;
+  border:2px solid #ffd5e4;
+  color:#55283d;
+}
+.choice:hover{
+  border-color:#ef6d9b;
+  transform:translateY(-1px);
+}
+button{
+  background:#e95d91;
+  color:#fff;
+}
+.hidden{display:none}
+.result h1{font-size:34px}
+.upi{
+  display:block;
+  text-decoration:none;
+  background:#5a2bbf;
+  color:#fff;
+  padding:16px;
+  border-radius:16px;
+  font-weight:800;
+  margin-top:18px;
+}
+.note{
+  font-size:13px;
+  color:#8a6474;
+  margin-top:16px;
+}
+.again{
+  background:#fff;
+  color:#d83d77;
+  border:2px solid #ffd0e1;
+  margin-top:10px;
+}
+.qr{
+  margin-top:15px;
+  border-radius:12px;
+}
+
+@media(max-width:500px){
+  .card{padding:22px}
+  .question{font-size:20px}
+}
+</style>
+</head>
+
+<body>
+
+<main class="app">
+<section class="card">
+
+<div id="quiz">
+
+<div class="heart">💗</div>
+
+<div class="tag">
+A LITTLE LOVE TEST FOR MY BABY
+</div>
+
+<p class="note">
+Answer honestly... or I'll know 😌💕
+</p>
+
+<div class="progress">
+<div class="bar" id="bar"></div>
+</div>
+
+<div id="q"></div>
+
+</div>
+
+
+<div id="result" class="result hidden">
+
+<div class="heart">🥹💗</div>
+
+<h1>
+Okay... you made it to the end 😳
+</h1>
+
+<p id="score"></p>
+
+<p>
+Now close your eyes for 2 seconds and imagine me smiling at you. 🙈
+</p>
+
+<p>
+<b>
+Since you made me blush while making this... I think you owe your favourite girl a tiny treat. 💕
+</b>
+</p>
+
+<p>
+<b>
+There is no fixed amount, baby. Pay whatever you feel like. 😌💗
+</b>
+</p>
+
+<div id="qrWrap" class="hidden">
+
+<img
+id="qr"
+class="qr"
+alt="UPI QR code"
+width="220"
+height="220"
+>
+
+<p class="note">
+Scan this QR and choose any amount you want. 💸💕
+</p>
+
+</div>
+
+<a
+class="upi"
+id="pay"
+href="#"
+>
+💗 Pay Me Whatever You Want
+</a>
+
+<button
+class="again"
+onclick="restart()"
+>
+Read my questions again 🙈
+</button>
+
+</div>
+
+</section>
+</main>
+
+
+<script>
+
+const UPI_ID="7671899712@ptyes";
+const PAYEE_NAME="My Cutie";
+
+const questions=[
+
+{
+q:"Be honest... what happens to your heart when you see my name pop up? 🙈",
+a:[
+"Nothing 😌",
+"It skips a little beat ❤️",
+"I smile like an idiot",
+"I immediately want to call you"
+],
+correct:1
+},
+
+{
+q:"If I suddenly looked at you and smiled without saying anything... what would you do? 👀💕",
+a:[
+"Look away shyly 🙈",
+"Smile back",
+"Pretend I'm not blushing",
+"All of these because you make me nervous 😭"
+],
+correct:3
+},
+
+{
+q:"Which moment would secretly make you blush the most? 🥹",
+a:[
+"Me holding your hand",
+"Me saying 'I love you' softly",
+"A surprise hug from behind",
+"Me whispering 'come here, baby' 😳"
+],
+correct:3
+},
+
+{
+q:"Complete this honestly: 'If you were here right now, I would...' 💗",
+a:[
+"Give you a hug",
+"Hold your hand",
+"Stare at you and smile",
+"Probably do ALL THREE 😭❤️"
+],
+correct:3
+},
+
+{
+q:"What is the cutest thing about me that you secretly love the most? 🥰",
+a:[
+"My smile 😊",
+"My eyes 👀",
+"The way I talk to you 💕",
+"Literally everything about me 😭❤️"
+],
+correct:3
+},
+
+{
+q:"If we were sitting together right now and nobody was around... what would you want first? 🙈",
+a:[
+"Hold my hand",
+"Give me a long hug 🤗",
+"Look into my eyes",
+"Pull me closer ❤️"
+],
+correct:3
+},
+
+{
+q:"If I sent you 'I miss you' at midnight, what would you secretly want to reply? 🌙💗",
+a:[
+"I miss you too",
+"Come here 🥺",
+"I was already thinking about you",
+"I'm calling you right now ❤️"
+],
+correct:3
+},
+
+{
+q:"Which nickname from me would make you blush the fastest? 😳",
+a:[
+"Baby 💕",
+"My love ❤️",
+"Cutie 🥹",
+"All of them if you say them softly 🙈"
+],
+correct:3
+},
+
+{
+q:"If I suddenly hugged you from behind, what would happen? 🫣",
+a:[
+"I'd freeze",
+"I'd smile like crazy",
+"I'd turn around and hug you tighter ❤️",
+"I'd never want to let go 🥹"
+],
+correct:3
+},
+
+{
+q:"Last one, baby... if I said 'I want you' right now, what would your heart say? 😳",
+a:[
+"Come here ❤️",
+"I want you too",
+"Stop making me blush 🙈",
+"You already have me"
+],
+correct:3
+}
+
+];
+
+let i=0;
+let score=0;
+
+function render(){
+
+document.getElementById("bar").style.width =
+(i/questions.length*100)+"%";
+
+let x=questions[i];
+
+document.getElementById("q").innerHTML=`
+
+<div class="question">
+${x.q}
+</div>
+
+<div class="choices">
+
+${x.a.map((v,n)=>`
+
+<button
+class="choice"
+onclick="answer(${n})"
+>
+${v}
+</button>
+
+`).join("")}
+
+</div>
+
+<p class="note">
+Question ${i+1} of ${questions.length}
+</p>
+
+`;
+
+}
+
+
+function answer(n){
+
+if(n===questions[i].correct){
+score++;
+}
+
+i++;
+
+if(i<questions.length){
+render();
+}else{
+finish();
+}
+
+}
+
+
+function finish(){
+
+document.getElementById("quiz")
+.classList.add("hidden");
+
+document.getElementById("result")
+.classList.remove("hidden");
+
+document.getElementById("score").textContent =
+`You got ${score}/${questions.length} correct. That's cute enough for a reward... probably. 😏`;
+
+const url =
+`upi://pay?pa=${encodeURIComponent(UPI_ID)}&pn=${encodeURIComponent(PAYEE_NAME)}&cu=INR&tn=${encodeURIComponent("Cutie Quiz reward 💗")}`;
+
+document.getElementById("pay").href=url;
+
+if(UPI_ID){
+
+document.getElementById("qr").src =
+"https://quickchart.io/qr?size=220&text="+
+encodeURIComponent(url);
+
+document.getElementById("qrWrap")
+.classList.remove("hidden");
+
+}
+
+}
+
+
+function restart(){
+
+i=0;
+score=0;
+
+document.getElementById("result")
+.classList.add("hidden");
+
+document.getElementById("quiz")
+.classList.remove("hidden");
+
+render();
+
+}
+
+render();
+
+</script>
+
+</body>
+</html>
+```
